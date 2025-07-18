@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/webp" href="/assets/strawHat-fav.webp" />
+    <title>Developer Portfolio</title>
+    <script>
+      // IIFE to avoid polluting global scope
+      (function () {
+        try {
+          var theme = localStorage.getItem("theme");
+          if (theme === "dark") {
+            document.documentElement.classList.add("dark");
+          } else {
+            // Default to light if theme is 'light' or not set
+            document.documentElement.classList.remove("dark");
+            if (!theme) {
+              // If no theme was stored, set it to 'light'
+              localStorage.setItem("theme", "light");
+            }
+          }
+        } catch (e) {
+          // Fallback for environments where localStorage might be restricted
+          console.warn("Could not set initial theme from localStorage:", e);
+          document.documentElement.classList.remove("dark"); // Default to light on error
+        }
+      })();
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class", // Enable class-based dark mode
+        theme: {
+          extend: {
+            colors: {
+              // Light theme (default) based on user's new palette
+              background: "#FFFFFF", // --color-bg
+              card: "#F7F7F7", // --color-surface
+              "card-hover": "#ECECEC", // Derived: slightly darker than card
+              border: "#E5E5EA", // --color-divider
+              "input-bg": "#F2F2F5", // --color-input-bg
+              "input-border": "#E5E5EA", // Use divider color for input border for consistency
+              "text-primary": "#1C1C1E", // --color-text-primary
+              "text-secondary": "rgba(60,60,67,0.6)", // --color-text-secondary
+              "text-placeholder": "#9E9EA0", // --color-placeholder
+
+              "button-primary-bg": "#000000", // --color-button-primary-bg
+              "button-primary-text": "#FFFFFF", // --color-button-primary-text
+              "button-primary-hover": "#1A1A1A", // Derived: slightly lighter black
+
+              "button-secondary-bg": "#E5E5EA", // Using --color-divider as base
+              "button-secondary-text": "#1C1C1E", // Using --color-text-primary
+              "button-secondary-hover": "#DCDCE0", // Derived: slightly darker
+
+              "accent-green": "#34C759", // --color-accent (light)
+              "accent-green-bg": "#E6F9EC", // --color-accent-bg (light)
+              "accent-red": "#FF3B30", // System Red (Light)
+
+              // Dark theme based on user's new palette
+              "dark-background": "#1C1C1E", // --color-bg
+              "dark-card": "#2C2C2E", // --color-surface
+              "dark-card-hover": "#38383A", // Derived: slightly lighter than dark-card
+              "dark-border": "#3A3A3C", // --color-divider
+              "dark-input-bg": "#3A3A3C", // --color-input-bg
+              "dark-input-border": "#4A4A4C", // Derived: slightly lighter than input-bg for border
+              "dark-text-primary": "#FFFFFF", // --color-text-primary
+              "dark-text-secondary": "rgba(235,235,245,0.6)", // --color-text-secondary
+              "dark-text-placeholder": "#636366", // --color-placeholder
+
+              "dark-button-primary-bg": "#48484A", // --color-button-primary-bg
+              "dark-button-primary-text": "#FFFFFF", // --color-button-primary-text
+              "dark-button-primary-hover": "#5A5A5C", // Derived: slightly lighter
+
+              "dark-button-secondary-bg": "#3A3A3C", // Using --color-divider/--color-input-bg (dark)
+              "dark-button-secondary-text": "#FFFFFF", // Using --color-text-primary (dark)
+              "dark-button-secondary-hover": "#4A4A4C", // Derived: slightly lighter
+
+              "dark-accent-green": "#30D158", // --color-accent (dark)
+              "dark-accent-green-bg": "#054F27", // --color-accent-bg (dark)
+              "dark-accent-red": "#FF453A", // System Red (Dark)
+            },
+            ringColor: (theme) => ({
+              // For focus rings
+              DEFAULT: theme("colors.accent-green"), // Use light accent green for default focus ring
+              // Dark mode focus rings will be handled by dark:ring-dark-accent-green or similar specific classes
+            }),
+            animation: {
+              // Add custom animation
+              "spin-slow": "spin-slow 20s linear infinite",
+            },
+            keyframes: {
+              // Add custom keyframes
+              "spin-slow": {
+                to: { transform: "rotate(360deg)" },
+              },
+            },
+            letterSpacing: {
+              // Extend letterSpacing
+              wider: "0.9em", // Override default 'wider'
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      /* Ensure html/body take full height for sticky footer */
+      html,
+      body,
+      #root {
+        min-height: 100vh;
+      }
+      #root {
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Header nav active pill */
+      :root {
+        --current-accent-color-text: #34c759; /* For active icon text (light) */
+        --current-accent-pill-bg: #ececec; /* For pill background (light theme card-hover) */
+      }
+      html.dark {
+        /* More specific selector for when <html> has 'dark' class */
+        --current-accent-color-text: #30d158; /* For active icon text (dark) */
+        --current-accent-pill-bg: #38383a; /* For pill background (dark theme dark-card-hover) */
+      }
+      .nav-active-pill {
+        position: absolute;
+        background-color: var(--current-accent-pill-bg);
+        border-radius: 9999px; /* Pill shape */
+        transition: left 0.3s ease-in-out, width 0.3s ease-in-out,
+          top 0.3s ease-in-out, height 0.3s ease-in-out,
+          opacity 0.3s ease-in-out, background-color 0.3s ease-in-out; /* Added background-color transition */
+        opacity: 0;
+        z-index: -1; /* Ensure it's behind the icon/text content of NavItem */
+      }
+
+      /* Global transitions for theme changes */
+      *,
+      *::before,
+      *::after {
+        transition-property: background-color, border-color, color, fill, stroke;
+        transition-duration: 0.3s;
+        transition-timing-function: ease-in-out;
+      }
+
+      /* Ensure .page-transition and .nav-active-pill specific transitions are respected. */
+      /* The transition shorthand on these classes will correctly override the global * transition-property for them. */
+      /* For .page-transition, it will only transition opacity. */
+      /* For .nav-active-pill, it will transition its listed properties (left, width, etc., and now background-color). */
+
+      /* Intro Animation Styles */
+      @keyframes intro-letter-anim {
+        from {
+          opacity: 0;
+          transform: translateY(50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes intro-line-anim {
+        from {
+          width: 0%;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+        to {
+          width: 100%;
+          left: 0%;
+          transform: translateX(0%);
+        }
+      }
+
+      .intro-letter {
+        opacity: 0; /* Initial state */
+        animation: intro-letter-anim 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      }
+
+      .intro-line {
+        animation: intro-line-anim 0.8s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+        animation-delay: 0.5s;
+      }
+
+      /* Enhanced intro animations */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .animate-fadeIn {
+        animation: fadeIn 0.6s ease-out forwards;
+      }
+
+      /* Enhanced letter animation with glow effect */
+      .intro-letter {
+        opacity: 0;
+        animation: intro-letter-anim 1.2s cubic-bezier(0.22, 1, 0.36, 1)
+          forwards;
+        text-shadow: 0 0 20px rgba(52, 199, 89, 0.3);
+        filter: drop-shadow(0 0 10px rgba(52, 199, 89, 0.2));
+      }
+
+      html.dark .intro-letter {
+        text-shadow: 0 0 20px rgba(48, 209, 88, 0.4);
+        filter: drop-shadow(0 0 10px rgba(48, 209, 88, 0.3));
+      }
+
+      /* Enhanced line animation */
+      .intro-line {
+        animation: intro-line-anim 1s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+        animation-delay: 0.7s;
+        box-shadow: 0 0 20px rgba(52, 199, 89, 0.4);
+      }
+
+      html.dark .intro-line {
+        box-shadow: 0 0 20px rgba(48, 209, 88, 0.5);
+      }
+
+      /* Page Load Animations */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      /* Custom spin animation (if not using Tailwind's extended animation) */
+      @keyframes spin-slow-custom {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .animate-spin-slow-custom {
+        /* Use if Tailwind extend doesn't work as expected */
+        animation: spin-slow-custom 20s linear infinite;
+      }
+
+      .animated-item {
+        opacity: 0; /* Initial state, animation will override */
+      }
+
+      .anim-fadeInUp {
+        animation: fadeInUp 0.5s ease-out forwards;
+      }
+
+      .anim-fadeIn {
+        animation: fadeIn 0.4s ease-out forwards;
+      }
+
+      /* Animation Delay Utilities */
+      .anim-delay-100 {
+        animation-delay: 0.1s;
+      }
+      .anim-delay-200 {
+        animation-delay: 0.2s;
+      }
+      .anim-delay-300 {
+        animation-delay: 0.3s;
+      }
+      .anim-delay-400 {
+        animation-delay: 0.4s;
+      }
+      .anim-delay-500 {
+        animation-delay: 0.5s;
+      }
+      .anim-delay-600 {
+        animation-delay: 0.6s;
+      }
+      .anim-delay-700 {
+        animation-delay: 0.7s;
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "react": "https://esm.sh/react@^19.1.0",
+          "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
+          "react/": "https://esm.sh/react@^19.1.0/",
+          "react-icons/": "https://esm.sh/react-icons@5.2.1/"
+        }
+      }
+    </script>
+    <link rel="stylesheet" href="/index.css" />
+  </head>
+  <body
+    class="bg-background dark:bg-dark-background text-text-primary dark:text-dark-text-primary"
+  >
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
