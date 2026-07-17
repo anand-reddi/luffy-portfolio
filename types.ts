@@ -17,6 +17,14 @@ export interface PersonalInfo {
   bio: string;
   imageUrl: string;
   email: string;
+  /** Text spinning around the profile image on the home hero. Falls back to name if omitted. */
+  circularText?: string;
+  /** Letter spacing for the circular text (CSS value, e.g. "0.9em", "4px"). */
+  circularTextLetterSpacing?: string;
+  /** English word that swaps with Japanese on home / about title / footer */
+  animatedNameEnglish?: string;
+  /** Japanese (or alt) text shown in the name swap animation */
+  animatedNameJapanese?: string;
   aboutMeIntro: string;
   aboutMeDetailed: string[];
   aboutPageImageUrl: string;
@@ -67,10 +75,23 @@ export interface SideProject {
   iconComponent?: React.ComponentType<IconProps>;
   name: string;
   tag: string;
-  link: string;
-  linkText: string;
+  link?: string;
+  linkText?: string;
   description?: string;
+  keyFeatures?: string[];
   cardImageUrl?: string; // New field for card image
+
+  // Optional fields for a details page (like main projects)
+  year?: string;
+  projectType?: string;
+  tagline?: string;
+  overview?: string;
+  technologies?: string[];
+  images?: string[];
+  playStoreStats?: {
+    downloads: string;
+    rating: string;
+  };
 }
 
 export interface SocialLink {
@@ -92,6 +113,11 @@ export interface HeroProps {
   bio: string;
   imageUrl: string;
   email: string;
+  instagramUrl: string;
+  circularText?: string;
+  circularTextLetterSpacing?: string;
+  animatedNameEnglish?: string;
+  animatedNameJapanese?: string;
   setCurrentPage: (pageId: string, projectId?: string) => void;
 }
 

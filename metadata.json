@@ -1,6 +1,6 @@
 {
-  "name": "Developer Portfolio",
-  "description": "A personal portfolio website for a web developer, showcasing projects and skills.",
+  "name": "Luffy Portfolio Template",
+  "description": "Open-source React + TypeScript portfolio template with a fun One Piece demo theme. Fork, customize constants.ts, and deploy.",
   "requestFramePermissions": [],
   "prompt": ""
 }

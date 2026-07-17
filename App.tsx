@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { useSwipeable } from 'react-swipeable';
 import { Header } from './components/Header';
@@ -12,13 +12,18 @@ import { ProjectsPage } from './components/ProjectsPage';
 import { ProductsPage } from './components/ProductsPage';
 import { HireMePage } from './components/HireMePage';
 import { ProjectDetailsPage } from './components/ProjectDetailsPage';
+import { SideProjectDetailsPage } from './components/SideProjectDetailsPage';
 import { PERSONAL_INFO, PROJECTS, SIDE_PROJECTS, SOCIAL_LINKS, SKILLS } from './constants';
 import { IntroAnimation } from './components/IntroAnimation';
+import { SmoothScrollProvider, SmoothScrollToTop } from './components/SmoothScrollProvider';
+import { useLenis } from 'lenis/react';
+import clickSound from './assets/click_sound.wav';
 
 // Wrapper component to handle navigation and theme
 const AppContent: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const lenis = useLenis();
   const [showIntro, setShowIntro] = useState(true);
   
   // Theme state initialization
@@ -28,6 +33,8 @@ const AppContent: React.FC = () => {
     }
     return 'light';
   });
+
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const handleAnimationComplete = useCallback(() => {
     setShowIntro(false);
@@ -45,20 +52,90 @@ const AppContent: React.FC = () => {
     }
   }, [theme]);
 
-  const toggleTheme = useCallback(() => {
-    setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
+  useEffect(() => {
+    // Global UI click sound for buttons/menus
+    const audio = new Audio(clickSound);
+    audio.preload = 'auto';
+    audio.volume = 0.35;
+
+    const onDocumentClick = (event: MouseEvent) => {
+      const target = event.target as HTMLElement | null;
+      if (!target) return;
+
+      // Skip form typing interactions
+      if (target.closest('input, textarea, select, label')) return;
+
+      // Play for interactive UI controls
+      const interactive = target.closest('button, a, [role="button"], [data-click-sound="true"]');
+      if (!interactive) return;
+      if ((interactive as HTMLButtonElement).disabled) return;
+      if (interactive.getAttribute('aria-disabled') === 'true') return;
+
+      try {
+        audio.currentTime = 0;
+        void audio.play();
+      } catch {
+        // Ignore autoplay / platform restrictions
+      }
+    };
+
+    document.addEventListener('click', onDocumentClick, true);
+    return () => {
+      document.removeEventListener('click', onDocumentClick, true);
+      audio.pause();
+    };
   }, []);
 
+  const toggleTheme = useCallback(
+    (_event?: React.MouseEvent) => {
+      const nextTheme = theme === 'light' ? 'dark' : 'light';
+      const doc = document as unknown as {
+        startViewTransition?: (cb: () => void) => {
+          ready: Promise<void>;
+          finished: Promise<void>;
+        };
+      };
+
+      document.documentElement.setAttribute('data-theme-transition', nextTheme);
+
+      if (doc.startViewTransition) {
+        const transition = doc.startViewTransition(() => {
+          setTheme(nextTheme);
+        });
+
+        void transition.finished.finally(() => {
+          document.documentElement.removeAttribute('data-theme-transition');
+        });
+        return;
+      }
+
+      // Fallback: plain state toggle
+      setTheme(nextTheme);
+      window.setTimeout(() => {
+        document.documentElement.removeAttribute('data-theme-transition');
+      }, 500);
+    },
+    [theme]
+  );
+
   const handleSetPage = useCallback((page: string, projectId?: string) => {
-    if (page === 'home') {
-      navigate('/');
-    } else if (page === 'project-detail' && projectId) {
-      navigate(`/project/${projectId}`);
-    } else {
-      navigate(`/${page}`);
-    }
-    window.scrollTo(0, 0);
-  }, [navigate]);
+    setIsTransitioning(true);
+    setTimeout(() => {
+      if (page === 'home') {
+        navigate('/');
+      } else if (page === 'project-detail' && projectId) {
+        navigate(`/project/${projectId}`);
+      } else {
+        navigate(`/${page}`);
+      }
+      setIsTransitioning(false);
+      if (lenis) {
+        lenis.scrollTo(0, { immediate: true });
+      } else {
+        window.scrollTo(0, 0);
+      }
+    }, 150);
+  }, [navigate, lenis]);
 
   // Menu tab order for swipe navigation
   const menuTabs = ['home', 'about', 'projects', 'products', 'hire'];
@@ -76,24 +153,51 @@ const AppContent: React.FC = () => {
   // Swipe gesture handlers (only on mobile, not on project-detail)
   const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
   const currentTabIdx = menuTabs.indexOf(currentPage);
+  const swipeStartAllowedRef = useRef(true);
+  const swipeStartAtRef = useRef<{ x: number; y: number } | null>(null);
+
   const goToTab = (idx: number) => {
     if (idx >= 0 && idx < menuTabs.length) {
       handleSetPage(menuTabs[idx]);
     }
   };
   const swipeHandlers = useSwipeable({
+    onSwipeStart: (e) => {
+      // Only allow deliberate horizontal swipe starting from middle of the screen.
+      // This reduces accidental tab changes when user slightly drags/scrolls.
+      const touch = 'touches' in e && e.touches && e.touches[0] ? e.touches[0] : null;
+      const x = touch?.clientX ?? 0;
+      const y = touch?.clientY ?? 0;
+      swipeStartAtRef.current = { x, y };
+
+      const w = window.innerWidth || 1;
+      const startRatio = x / w;
+      const withinMiddle = startRatio >= 0.22 && startRatio <= 0.78;
+
+      const target = e.target as HTMLElement | null;
+      const isTyping = !!target?.closest('input, textarea, select, label');
+      const isInteractive = !!target?.closest('button, a, [role="button"]');
+
+      swipeStartAllowedRef.current = withinMiddle && !isTyping && !isInteractive;
+    },
     onSwipedLeft: () => {
+      if (!swipeStartAllowedRef.current) return;
       if (isMobile && currentTabIdx !== -1 && currentPage !== 'project-detail') {
         goToTab(currentTabIdx + 1);
       }
     },
     onSwipedRight: () => {
+      if (!swipeStartAllowedRef.current) return;
       if (isMobile && currentTabIdx !== -1 && currentPage !== 'project-detail') {
         goToTab(currentTabIdx - 1);
       }
     },
     trackTouch: true,
     trackMouse: false,
+    // Make swipe less sensitive so slight moves don't switch pages
+    delta: 60,
+    // Prefer allowing scroll unless a real swipe happens
+    preventScrollOnSwipe: false,
   });
 
   if (showIntro) {
@@ -102,6 +206,7 @@ const AppContent: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col" {...swipeHandlers}>
+      <SmoothScrollToTop pathname={location.pathname} />
       <Header
         currentPage={currentPage}
         setCurrentPage={handleSetPage}
@@ -110,7 +215,7 @@ const AppContent: React.FC = () => {
       />
       <main 
         key={location.pathname} // Force re-render on route change for animations
-        className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-16 md:space-y-24 flex-grow"
+        className={`w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-16 md:space-y-24 flex-grow page-transition ${isTransitioning ? 'page-fade-exit-active' : 'page-fade-enter-active'}`}
       >
         <Routes>
           <Route path="/" element={
@@ -121,6 +226,11 @@ const AppContent: React.FC = () => {
                 bio={PERSONAL_INFO.bio}
                 imageUrl={PERSONAL_INFO.imageUrl}
                 email={PERSONAL_INFO.email}
+                circularText={PERSONAL_INFO.circularText}
+                circularTextLetterSpacing={PERSONAL_INFO.circularTextLetterSpacing}
+                animatedNameEnglish={PERSONAL_INFO.animatedNameEnglish}
+                animatedNameJapanese={PERSONAL_INFO.animatedNameJapanese}
+                instagramUrl={SOCIAL_LINKS.find((link) => link.name === 'Instagram')?.url ?? 'https://instagram.com'}
                 setCurrentPage={handleSetPage}
               />
               <ProjectsSection 
@@ -167,6 +277,13 @@ const AppContent: React.FC = () => {
               setCurrentPage={handleSetPage} 
             />
           } />
+
+          <Route path="/product/:sideProjectId" element={
+            <SideProjectDetailsPage
+              setCurrentPage={handleSetPage}
+              email={PERSONAL_INFO.email}
+            />
+          } />
           
           <Route path="/hire" element={
             <HireMePage 
@@ -197,16 +314,23 @@ const AppContent: React.FC = () => {
           } />
         </Routes>
       </main>
-      <Footer socialLinks={SOCIAL_LINKS} name={PERSONAL_INFO.name} />
+      <Footer
+        socialLinks={SOCIAL_LINKS}
+        name={PERSONAL_INFO.name}
+        animatedNameEnglish={PERSONAL_INFO.animatedNameEnglish}
+        animatedNameJapanese={PERSONAL_INFO.animatedNameJapanese}
+      />
     </div>
   );
 };
 
 const App: React.FC = () => {
   return (
-    <Router>
-      <AppContent />
-    </Router>
+    <SmoothScrollProvider>
+      <Router>
+        <AppContent />
+      </Router>
+    </SmoothScrollProvider>
   );
 };
 

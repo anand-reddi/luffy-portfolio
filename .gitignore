@@ -1,24 +1,39 @@
-# Logs
-logs
+# Dependencies
+node_modules
+/.pnp
+.pnp.js
+
+# Environment variables (sensitive - DO NOT COMMIT)
+.env
+.env.local
+.env.*.local
+
+# Testing
+/coverage
+
+# Production
+/dist
+/build
+
+# Misc
+.DS_Store
+.AppleDouble
+.LSOverride
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-lerna-debug.log*
-
-node_modules
-dist
-dist-ssr
-*.local
 
 # Editor directories and files
-.vscode/*
-!.vscode/extensions.json
 .idea
-.DS_Store
+.vscode
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+.vite
+
+# IDE
+.cursor

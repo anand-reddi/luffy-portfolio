@@ -1,12 +1,20 @@
 import React from 'react';
 import { SocialLink } from '../types';
+import { AnimatedKrishnaText } from './AnimatedKrishnaText';
 
 interface FooterProps {
   socialLinks: SocialLink[];
-  name: string; // Retained for potential future use, though not in new copyright
+  name: string;
+  animatedNameEnglish?: string;
+  animatedNameJapanese?: string;
 }
 
-export const Footer: React.FC<FooterProps> = ({ socialLinks, name }) => {
+export const Footer: React.FC<FooterProps> = ({
+  socialLinks,
+  name,
+  animatedNameEnglish,
+  animatedNameJapanese,
+}) => {
   return (
     <footer className="w-full bg-card dark:bg-dark-card border-t border-border dark:border-dark-border mt-auto">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
@@ -41,7 +49,14 @@ export const Footer: React.FC<FooterProps> = ({ socialLinks, name }) => {
   </p>
   <p className="text-xs text-text-secondary dark:text-dark-text-secondary mt-1">
     Developed by{' '}
-    <span className="font-medium">{name}</span>, UI design by{' '}
+    <span className="font-medium">
+      <AnimatedKrishnaText
+        text={name}
+        krishnaEnglish={animatedNameEnglish}
+        krishnaJapanese={animatedNameJapanese}
+      />
+    </span>
+    , UI design by{' '}
     <a
       href="https://dribbble.com/shots/22110108-Subtle-Folio-Portfolio-Framer-Template"
       target="_blank"

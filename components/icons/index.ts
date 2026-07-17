@@ -57,4 +57,6 @@ export {
   FiGitBranch, // Git
   FiGitMerge, // Alternative for Git
   FiSend, // Postman
+  FiStar as StarIcon,
+  FiDownload as DownloadIcon,
 } from 'react-icons/fi';

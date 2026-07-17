@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
 import { PROJECTS } from '../constants';
 import { ProjectCard } from './ProjectCard';
 import { SectionTitle } from './SectionTitle';
@@ -11,9 +11,15 @@ export const ProjectDetailsPage: React.FC<{
   email: string;
 }> = ({ setCurrentPage, email }) => {
   const { projectId } = useParams<{ projectId: string }>();
-  const navigate = useNavigate();
-  
-  const project = PROJECTS.find(p => p.id === projectId);
+
+  if (
+    projectId === "project-ooho-website" ||
+    projectId === "project-ooho-hrms"
+  ) {
+    return <Navigate to="/project/project-ooho" replace />;
+  }
+
+  const project = PROJECTS.find((p) => p.id === projectId);
   const otherProjects = PROJECTS.filter(p => p.id !== projectId);
 
   if (!project) {

@@ -1,16 +1,17 @@
-import React, { useState, useCallback } from 'react';
-import { PlusIcon, DocumentDuplicateIcon } from './icons';
+import React from 'react';
+// import React, { useState, useCallback } from 'react';
+import { PlusIcon /* , DocumentDuplicateIcon */ } from './icons';
 import { CallToActionProps } from '../types'; // Import CallToActionProps
 
 export const CallToAction: React.FC<CallToActionProps> = ({ email, setCurrentPage }) => {
-  const [emailCopied, setEmailCopied] = useState(false);
+  // const [emailCopied, setEmailCopied] = useState(false);
 
-  const copyEmail = useCallback(() => {
-    navigator.clipboard.writeText(email).then(() => {
-      setEmailCopied(true);
-      setTimeout(() => setEmailCopied(false), 2000);
-    }).catch(err => console.error("Failed to copy email: ", err));
-  }, [email]);
+  // const copyEmail = useCallback(() => {
+  //   navigator.clipboard.writeText(email).then(() => {
+  //     setEmailCopied(true);
+  //     setTimeout(() => setEmailCopied(false), 2000);
+  //   }).catch(err => console.error("Failed to copy email: ", err));
+  // }, [email]);
 
   return (
     <section className="animated-item anim-fadeInUp anim-delay-400 py-12 md:py-16 text-center bg-card dark:bg-dark-card rounded-xl shadow-xl border border-border dark:border-dark-border">
@@ -29,14 +30,14 @@ export const CallToAction: React.FC<CallToActionProps> = ({ email, setCurrentPag
             <PlusIcon className="w-5 h-5 mr-2" />
             Hire Me
           </button>
-          <button
+          {/* <button
             onClick={copyEmail}
             className="inline-flex items-center justify-center px-6 py-3 text-base font-medium text-button-secondary-text dark:text-dark-button-secondary-text bg-button-secondary-bg dark:bg-dark-button-secondary-bg hover:bg-button-secondary-hover dark:hover:bg-dark-button-secondary-hover rounded-lg transition-colors focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
             aria-live="polite"
           >
             <DocumentDuplicateIcon className="w-5 h-5 mr-2" />
             {emailCopied ? 'Email Copied!' : 'Copy Email'}
-          </button>
+          </button> */}
         </div>
       </div>
     </section>

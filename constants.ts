@@ -47,6 +47,23 @@ import {
 // You can get one for free at https://web3forms.com/
 export const WEB3FORMS_ACCESS_KEY = ""; // TODO: Replace with your own Web3Forms Access Key
 
+/**
+ * Visitor count shown on the home hero.
+ *
+ * Default: STATIC demo number (no Firebase / no personal data needed).
+ * Live count: set enableLiveCount to true AND add your own Firebase keys in .env
+ * (see VISITOR_COUNTER_SETUP.md).
+ */
+export const VISITOR_STATS = {
+  /** Shown when live Firebase counting is off or not configured */
+  staticCount: 10000800,
+  /**
+   * false = always show staticCount (recommended for the open-source template)
+   * true  = use your own Firebase Firestore counter when .env is filled in
+   */
+  enableLiveCount: false,
+};
+
 export const PERSONAL_INFO: PersonalInfo = {
   name: "Monkey D. Luffy",
   title: "Future Pirate King",
@@ -54,7 +71,14 @@ export const PERSONAL_INFO: PersonalInfo = {
   imageUrl:
     "https://i.pinimg.com/736x/17/f8/9a/17f89aeae95b7293d61dfd79c102cbc7.jpg", // Luffy's anime portrait
   email: "luffy@strawhats.com",
-  githubUsername: "anand-reddi",
+  githubUsername: "octocat",
+  // Text rotating around the profile photo on the home page
+  circularText: "MONKEY D. LUFFY • PIRATE KING • STRAW HAT • ",
+  // Gap between letters on the circular text (try "0.5em", "0.9em", "1.2em")
+  circularTextLetterSpacing: "0.9em",
+  // Name swap animation (home hero, About "It's Me", footer only)
+  animatedNameEnglish: "Luffy",
+  animatedNameJapanese: "ルフィ",
   aboutMeIntro:
     "Hi! I'm Monkey D. Luffy, captain of the Straw Hat Pirates and future King of the Pirates! I love adventure, my friends, and especially meat. I ate the Gum-Gum Devil Fruit, so my body stretches like rubber! I'm sailing the Grand Line with my amazing crew, searching for the legendary One Piece treasure. I believe in freedom, friendship, and never giving up on your dreams. If you want to join my crew, you better have a dream and be ready for the adventure of a lifetime! Shishishi!",
   aboutMeDetailed: [
@@ -246,6 +270,17 @@ export const SIDE_PROJECTS: SideProject[] = [
       "Create your own pirate wanted poster! Upload a photo and get your bounty.",
     cardImageUrl:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcRNIzKewfHkPM_RztQBv_NA4JyRlgVi6cgA&s",
+    year: "2024",
+    projectType: "Web App",
+    tagline: "Make yourself look dangerous — even if you just ate meat.",
+    overview:
+      "A fun demo product page showing how side projects can open a full details view in this portfolio template.",
+    technologies: ["React", "Canvas", "Typography"],
+    keyFeatures: [
+      "Upload a face and generate a poster",
+      "Customize bounty text",
+      "Export as image",
+    ],
   },
   {
     id: "side-2",
@@ -259,18 +294,38 @@ export const SIDE_PROJECTS: SideProject[] = [
       "Browse all known Devil Fruits and their powers. Beware of side effects!",
     cardImageUrl:
       "https://static.vecteezy.com/system/resources/previews/046/805/836/non_2x/devil-fruits-gomu-gomu-no-monkey-d-luffy-one-piece-free-png.png",
+    year: "2025",
+    projectType: "Web App",
+    tagline: "Know every fruit before you bite it.",
+    overview: "Example product with richer metadata for the details page.",
+    technologies: ["React", "Search", "Content"],
   },
   {
     id: "side-3",
     iconComponent: PencilIcon,
     iconBgColor: "bg-yellow-500 dark:bg-yellow-600",
     name: "Zoro's Sword Tracker",
-    tag: "BETA",
+    tag: "Live on Play Store",
+    playStoreStats: {
+      downloads: "1K+",
+      rating: "4.5",
+    },
     link: "#",
-    linkText: "Try Beta",
+    linkText: "Play Store",
     description: "Keep track of all swords Zoro has owned (and lost).",
     cardImageUrl:
       "https://image.made-in-china.com/202f0j00wtkMBPJAMEqi/104cm-Roronoa-Zoro-Carbon-Steel-One-Piece-Anime-Cartoon-Cosplay-Sword-Purple.webp",
+    year: "2026",
+    projectType: "Android App",
+    tagline: "Never lose a sword again (or do, and still track it).",
+    overview:
+      "Demo of Play Store metrics badges (downloads + average rating) on product cards and detail pages.",
+    technologies: ["Android", "Flutter"],
+    keyFeatures: [
+      "Log every sword in the collection",
+      "Mark lost / found status",
+      "Share bounty-ready screenshots",
+    ],
   },
   {
     id: "side-4",
@@ -283,6 +338,8 @@ export const SIDE_PROJECTS: SideProject[] = [
     description:
       "A digital guide to Chopper's favorite remedies and medicines.",
     cardImageUrl: "https://s1.zerochan.net/Tony.Tony.Chopper.600.2356091.jpg",
+    year: "2023",
+    projectType: "Web Tool",
   },
 ];
 
@@ -294,10 +351,10 @@ export const SOCIAL_LINKS: SocialLink[] = [
   },
   {
     name: "LinkedIn",
-    url: "www.linkedin.com/in/",
+    url: "https://linkedin.com/",
     icon: LinkedinIcon,
   },
-  { name: "GitHub", url: "https://github.com/anand-reddi", icon: GithubIcon },
+  { name: "GitHub", url: "https://github.com/", icon: GithubIcon },
 ];
 
 export const SKILLS: Skill[] = [

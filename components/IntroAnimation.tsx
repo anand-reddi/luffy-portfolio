@@ -44,68 +44,35 @@ export const IntroAnimation: React.FC<IntroAnimationProps> = ({ onAnimationCompl
 
   return (
     <div
-      className={`fixed inset-0 z-[100] flex items-center justify-center bg-gradient-to-br from-background via-background to-card dark:from-dark-background dark:via-dark-background dark:to-dark-card transition-opacity duration-800 ease-in-out ${getContainerClasses()}`}
+      className={`fixed inset-0 z-[100] flex items-center justify-center bg-background dark:bg-dark-background transition-opacity duration-800 ease-in-out ${getContainerClasses()}`}
       aria-hidden="true"
     >
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-accent-green/10 dark:bg-dark-accent-green/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-24 h-24 bg-accent-green/5 dark:bg-dark-accent-green/5 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute top-1/2 right-1/3 w-16 h-16 bg-accent-green/8 dark:bg-dark-accent-green/8 rounded-full blur-xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+      {/* Background design (developer + creator vibe) */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="intro-bg-grid absolute inset-0" />
+        <div className="intro-blob intro-blob--left absolute -left-12 -top-12 w-[260px] h-[260px] sm:-left-24 sm:-top-24 sm:w-[420px] sm:h-[420px]" />
+        <div className="intro-blob intro-blob--right absolute -right-14 -bottom-14 w-[300px] h-[300px] sm:-right-28 sm:-bottom-28 sm:w-[520px] sm:h-[520px]" />
+        <div className="intro-diagonal-text absolute inset-0" />
       </div>
 
-      <div className="relative flex flex-col items-center justify-center">
-        {/* Main title */}
-        <div className="relative flex items-center justify-center text-7xl md:text-9xl font-black text-text-primary dark:text-dark-text-primary mb-8">
-          <span
-            className="intro-letter block transform hover:scale-110 transition-transform duration-300"
-            style={{ animationDelay: '0.1s' }}
-          >
-            L
-          </span>
-          <span
-            className="intro-letter block transform hover:scale-110 transition-transform duration-300"
-            style={{ animationDelay: '0.2s' }}
-          >
-            u
-          </span>
-          <span
-            className="intro-letter block transform hover:scale-110 transition-transform duration-300"
-            style={{ animationDelay: '0.3s' }}
-          >
-            f
-          </span>
-          <span
-            className="intro-letter block transform hover:scale-110 transition-transform duration-300"
-            style={{ animationDelay: '0.4s' }}
-          >
-            f
-          </span>
-          <span
-            className="intro-letter block transform hover:scale-110 transition-transform duration-300"
-            style={{ animationDelay: '0.5s' }}
-          >
-            y
-          </span>
-        </div>
+      <div className="relative flex items-center justify-center text-6xl md:text-8xl font-bold text-text-primary dark:text-dark-text-primary">
+        <span
+          className="intro-letter block"
+          style={{ animationDelay: '0.1s' }}
+        >
+          L
+        </span>
+        <span
+          className="intro-letter block"
+          style={{ animationDelay: '0.2s' }}
+        >
+          U
+        </span>
+        <div className="intro-line absolute w-full h-0.5 bg-accent-green dark:bg-dark-accent-green bottom-0"></div>
+      </div>
 
-        {/* Animated underline */}
-        <div className="relative w-full max-w-md">
-          <div className="intro-line absolute w-full h-1 bg-gradient-to-r from-transparent via-accent-green dark:via-dark-accent-green to-transparent bottom-0 rounded-full shadow-lg"></div>
-        </div>
-
-        {/* Subtitle */}
-        <div className="mt-8 text-center">
-          <p className="text-lg md:text-xl text-text-secondary dark:text-dark-text-secondary font-medium opacity-0 animate-fadeIn" style={{ animationDelay: '1s' }}>
-            Future King of the Pirates
-          </p>
-        </div>
-
-        {/* Floating elements */}
-        <div className="absolute -top-8 -left-8 w-4 h-4 bg-accent-green/30 dark:bg-dark-accent-green/30 rounded-full animate-bounce" style={{ animationDelay: '0.5s' }}></div>
-        <div className="absolute -bottom-8 -right-8 w-3 h-3 bg-accent-green/40 dark:bg-dark-accent-green/40 rounded-full animate-bounce" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute top-1/2 -left-12 w-2 h-2 bg-accent-green/50 dark:bg-dark-accent-green/50 rounded-full animate-bounce" style={{ animationDelay: '1.5s' }}></div>
-        <div className="absolute top-1/2 -right-12 w-2 h-2 bg-accent-green/50 dark:bg-dark-accent-green/50 rounded-full animate-bounce" style={{ animationDelay: '2s' }}></div>
+      <div className="intro-tagline absolute bottom-8 sm:bottom-10 md:bottom-12 left-1/2 -translate-x-1/2 text-[10px] sm:text-xs md:text-sm tracking-[0.18em] sm:tracking-[0.25em] uppercase text-text-secondary dark:text-dark-text-secondary px-4 text-center whitespace-nowrap">
+        Pirate • Dream Chaser
       </div>
     </div>
   );

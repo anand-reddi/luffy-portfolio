@@ -34,7 +34,7 @@ export const Header: React.FC<{
   currentPage: string;
   setCurrentPage: (pageId: string) => void;
   theme: string;
-  toggleTheme: () => void;
+  toggleTheme: (event?: React.MouseEvent) => void;
 }> = ({ currentPage, setCurrentPage, theme, toggleTheme }) => {
   
   const navigate = useNavigate();
@@ -131,7 +131,8 @@ export const Header: React.FC<{
           </nav>
           <div className="flex items-center space-x-3">
             <button
-              onClick={toggleTheme}
+              type="button"
+              onClick={(e) => toggleTheme(e)}
               aria-label={theme === 'light' ? "Switch to dark mode" : "Switch to light mode"}
               className="group text-text-secondary dark:text-dark-text-secondary hover:text-text-primary dark:hover:text-dark-text-primary p-2 rounded-full transition-colors hover:bg-card-hover dark:hover:bg-dark-card-hover"
             >
