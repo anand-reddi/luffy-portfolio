@@ -13,7 +13,7 @@ import { ProductsPage } from './components/ProductsPage';
 import { HireMePage } from './components/HireMePage';
 import { ProjectDetailsPage } from './components/ProjectDetailsPage';
 import { SideProjectDetailsPage } from './components/SideProjectDetailsPage';
-import { PERSONAL_INFO, PROJECTS, SIDE_PROJECTS, SOCIAL_LINKS, SKILLS } from './constants';
+import { PERSONAL_INFO, PROJECTS, SIDE_PROJECTS, SOCIAL_LINKS, SKILLS, DEVELOPER_CREDIT } from './constants';
 import { IntroAnimation } from './components/IntroAnimation';
 import { SmoothScrollProvider, SmoothScrollToTop } from './components/SmoothScrollProvider';
 import { useLenis } from 'lenis/react';
@@ -316,9 +316,10 @@ const AppContent: React.FC = () => {
       </main>
       <Footer
         socialLinks={SOCIAL_LINKS}
-        name={PERSONAL_INFO.name}
-        animatedNameEnglish={PERSONAL_INFO.animatedNameEnglish}
-        animatedNameJapanese={PERSONAL_INFO.animatedNameJapanese}
+        developerName={DEVELOPER_CREDIT.name}
+        developerUrl={DEVELOPER_CREDIT.url}
+        animatedNameEnglish={DEVELOPER_CREDIT.animatedNameEnglish}
+        animatedNameJapanese={DEVELOPER_CREDIT.animatedNameJapanese}
       />
     </div>
   );

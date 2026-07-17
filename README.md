@@ -89,5 +89,5 @@ MIT — use freely for personal or commercial portfolios. Keep attribution in th
 ## Credits
 
 - Template & demo theme maintained from the Luffy portfolio fork
-- Developer: [Instagram @krishhnahere](https://instagram.com/krishhnahere)
+- Developer: [Anand Krishna (@krishhnahere)](https://instagram.com/krishhnahere) — also linked from the footer “Developed by” credit
 - UI design inspiration: [Subtle Folio](https://dribbble.com/shots/22110108-Subtle-Folio-Portfolio-Framer-Template) by Nur Praditya

@@ -47,6 +47,14 @@ import {
 // You can get one for free at https://web3forms.com/
 export const WEB3FORMS_ACCESS_KEY = ""; // TODO: Replace with your own Web3Forms Access Key
 
+/** Template author credit in the footer (clickable) */
+export const DEVELOPER_CREDIT = {
+  name: "Anand Krishna",
+  animatedNameEnglish: "Krishna",
+  animatedNameJapanese: "クリシュナ",
+  url: "https://instagram.com/krishhnahere",
+};
+
 /**
  * Visitor count shown on the home hero.
  *
