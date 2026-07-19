@@ -25,6 +25,12 @@ export interface PersonalInfo {
   animatedNameEnglish?: string;
   /** Japanese (or alt) text shown in the name swap animation */
   animatedNameJapanese?: string;
+  /** First letter shown in the opening intro animation */
+  introLetter1?: string;
+  /** Second letter shown in the opening intro animation */
+  introLetter2?: string;
+  /** Tagline shown at the bottom of the opening intro animation */
+  introTagline?: string;
   aboutMeIntro: string;
   aboutMeDetailed: string[];
   aboutPageImageUrl: string;

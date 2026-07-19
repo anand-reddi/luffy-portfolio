@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { PERSONAL_INFO } from '../constants';
 
 interface IntroAnimationProps {
   onAnimationComplete: () => void;
@@ -6,6 +7,11 @@ interface IntroAnimationProps {
 
 export const IntroAnimation: React.FC<IntroAnimationProps> = ({ onAnimationComplete }) => {
   const [animationState, setAnimationState] = useState('entering'); // entering -> static -> exiting
+  const {
+    introLetter1 = 'L',
+    introLetter2 = 'U',
+    introTagline = 'Pirate • Dream Chaser',
+  } = PERSONAL_INFO;
 
   useEffect(() => {
     // This timer marks the end of the initial letter/line animations
@@ -60,19 +66,19 @@ export const IntroAnimation: React.FC<IntroAnimationProps> = ({ onAnimationCompl
           className="intro-letter block"
           style={{ animationDelay: '0.1s' }}
         >
-          L
+          {introLetter1}
         </span>
         <span
           className="intro-letter block"
           style={{ animationDelay: '0.2s' }}
         >
-          U
+          {introLetter2}
         </span>
         <div className="intro-line absolute w-full h-0.5 bg-accent-green dark:bg-dark-accent-green bottom-0"></div>
       </div>
 
       <div className="intro-tagline absolute bottom-8 sm:bottom-10 md:bottom-12 left-1/2 -translate-x-1/2 text-[10px] sm:text-xs md:text-sm tracking-[0.18em] sm:tracking-[0.25em] uppercase text-text-secondary dark:text-dark-text-secondary px-4 text-center whitespace-nowrap">
-        Pirate • Dream Chaser
+        {introTagline}
       </div>
     </div>
   );

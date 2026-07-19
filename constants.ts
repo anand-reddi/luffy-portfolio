@@ -87,6 +87,10 @@ export const PERSONAL_INFO: PersonalInfo = {
   // Name swap animation (home hero, About "It's Me", footer only)
   animatedNameEnglish: "Luffy",
   animatedNameJapanese: "ルフィ",
+  // Opening intro animation (full-screen splash before the site)
+  introLetter1: "L",
+  introLetter2: "U",
+  introTagline: "Pirate • Dream Chaser",
   aboutMeIntro:
     "Hi! I'm Monkey D. Luffy, captain of the Straw Hat Pirates and future King of the Pirates! I love adventure, my friends, and especially meat. I ate the Gum-Gum Devil Fruit, so my body stretches like rubber! I'm sailing the Grand Line with my amazing crew, searching for the legendary One Piece treasure. I believe in freedom, friendship, and never giving up on your dreams. If you want to join my crew, you better have a dream and be ready for the adventure of a lifetime! Shishishi!",
   aboutMeDetailed: [
