@@ -3,11 +3,13 @@
 An open-source developer portfolio template (React + TypeScript + Tailwind) with a fun One Piece demo theme. Fork it, replace the Luffy content with yours, and ship.
 
 <p align="center">
-  <img src="assets/Luffy.webp" alt="Luffy Portfolio Template — home page preview" width="100%" />
+  <img src="assets/Luffy.webp" alt="Desktop preview — home page" width="68%" />
+  &nbsp;&nbsp;
+  <img src="assets/luffy_mob.webp" alt="Mobile preview — home page" width="22%" />
 </p>
 
 <p align="center">
-  <em>Live home page preview — light theme hero with circular profile ring</em>
+  <em>Desktop &amp; mobile home page previews — light theme</em>
 </p>
 
 ## Features
