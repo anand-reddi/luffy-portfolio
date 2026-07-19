@@ -44,6 +44,7 @@ Update:
 - `PERSONAL_INFO` — name, title, bio, email, images, about text, GitHub username
 - `PERSONAL_INFO.animatedNameEnglish` / `animatedNameJapanese` — name swap on **home**, **About "It's Me"**, and **footer** only (paragraphs stay plain)
 - `PERSONAL_INFO.circularText` / `circularTextLetterSpacing` — spinning text around the profile photo
+- `PERSONAL_INFO.introLetter1` / `introLetter2` / `introTagline` — opening splash (two letters + bottom tagline)
 - `VISITOR_STATS` — static visitor number (live optional)
 - `PROJECTS` — main projects
 - `SIDE_PROJECTS` — products / side projects (optional `playStoreStats`, `overview`, `images`, etc.)
@@ -71,8 +72,8 @@ Edit in `constants.ts`:
 
 ```ts
 export const VISITOR_STATS = {
-  staticCount: 10800,      // shown out of the box
-  enableLiveCount: false,  // set true only after YOUR Firebase setup
+  staticCount: 10800, // shown out of the box
+  enableLiveCount: false, // set true only after YOUR Firebase setup
 };
 ```
 
@@ -82,10 +83,10 @@ No Firebase keys are required for the template demo.
 
 ## Scripts
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Local development |
-| `npm run build` | Production build → `dist/` |
+| Command           | Description                  |
+| ----------------- | ---------------------------- |
+| `npm run dev`     | Local development            |
+| `npm run build`   | Production build → `dist/`   |
 | `npm run preview` | Preview the production build |
 
 ## Deploy
@@ -99,5 +100,5 @@ MIT — use freely for personal or commercial portfolios. Keep attribution in th
 ## Credits
 
 - Template & demo theme maintained from the Luffy portfolio fork
-- Developer: [Anand Krishna (@krishhnahere)](https://instagram.com/krishhnahere) — also linked from the footer “Developed by” credit
+- Developed by: [Anand Krishna (@krishhnahere)](https://instagram.com/krishhnahere)
 - UI design inspiration: [Subtle Folio](https://dribbble.com/shots/22110108-Subtle-Folio-Portfolio-Framer-Template) by Nur Praditya
